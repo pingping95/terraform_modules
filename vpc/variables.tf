@@ -8,9 +8,9 @@ variable "vpc_cidr_block" {
   description = "The CIDR block for the VPC."
 }
 
-variable "prefix" {
+variable "Environment" {
   type        = string
-  description = "Prefix for resource tags."
+  description = "Environment for resource tags."
 }
 
 variable "public_subnet_cidr" {

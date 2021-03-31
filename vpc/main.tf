@@ -6,13 +6,13 @@ resource "aws_vpc" "my_vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name        = "${var.prefix}-vpc"
-    Environment = var.prefix
+    Name        = "${var.Environment}-vpc"
+    Environment = var.Environment
   }
 }
 
 // Public Subnets
-resource "aws_subnet" "my_public_subnet" {
+resource "aws_subnet" "my_public_subnets" {
   count                   = length(var.public_subnet_cidr)
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = var.public_subnet_cidr[count.index]
@@ -21,12 +21,12 @@ resource "aws_subnet" "my_public_subnet" {
 
   tags = {
     Name        = "public-subnet-${count.index + 1}"
-    Environment = var.prefix
+    Environment = var.Environment
   }
 }
 
 // Private Subnets
-resource "aws_subnet" "my_private_subnet" {
+resource "aws_subnet" "my_private_subnets" {
   count                   = length(var.private_subnet_cidr)
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = var.private_subnet_cidr[count.index]
@@ -35,7 +35,7 @@ resource "aws_subnet" "my_private_subnet" {
 
   tags = {
     Name        = "private-subnet-${count.index + 1}"
-    Environment = var.prefix
+    Environment = var.Environment
   }
 }
 
@@ -44,8 +44,8 @@ resource "aws_internet_gateway" "my_igw" {
   vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name        = "${var.prefix}-igw"
-    Environment = var.prefix
+    Name        = "${var.Environment}-igw"
+    Environment = var.Environment
   }
 }
 
@@ -57,10 +57,10 @@ resource "aws_eip" "nat_eip" {
 // NAT Gateway
 resource "aws_nat_gateway" "nat-gw" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.my_public_subnet[0].id
+  subnet_id     = aws_subnet.my_public_subnets[0].id
   depends_on    = [aws_internet_gateway.my_igw]
   tags = {
-    "Name" = "${var.prefix}-nat_gw"
+    "Name" = "${var.Environment}-nat_gw"
   }
 }
 
@@ -74,8 +74,8 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags = {
-    Name        = "${var.prefix}-public_rt"
-    Environment = var.prefix
+    Name        = "${var.Environment}-public_rt"
+    Environment = var.Environment
   }
 }
 
@@ -89,20 +89,20 @@ resource "aws_route_table" "private_rt" {
   }
 
   tags = {
-    Name        = "${var.prefix}-private_rt"
-    Environment = var.prefix
+    Name        = "${var.Environment}-private_rt"
+    Environment = var.Environment
   }
 }
 
 // Route table associations
 resource "aws_route_table_association" "public_rt_assoc" {
   count          = length(var.public_subnet_cidr)
-  subnet_id      = element(aws_subnet.my_public_subnet.*.id, count.index)
+  subnet_id      = element(aws_subnet.my_public_subnets.*.id, count.index)
   route_table_id = aws_route_table.public_rt.id
 }
 
 resource "aws_route_table_association" "private_rt_assoc" {
   count          = length(var.private_subnet_cidr)
-  subnet_id      = element(aws_subnet.my_private_subnet.*.id, count.index)
+  subnet_id      = element(aws_subnet.my_private_subnets.*.id, count.index)
   route_table_id = aws_route_table.private_rt.id
 }

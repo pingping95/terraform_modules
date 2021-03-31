@@ -33,7 +33,7 @@ public_subnet_cidr      Example: ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 private_subnet_cidr     Example: ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 public_az               Example: ["ap-northeast-2a", "ap-northeast-2c"]
 private_az              Example: ["ap-northeast-2a", "ap-northeast-2c"]
-define_eip              Example: true
+define_eip              Example: true     
 
 ```
 
@@ -44,4 +44,4 @@ Output 리스트입니다.
 - VPC information
 - Public subnet information
 - Private subnet information
-- Elastic IP information% 
+- Elastic IP information
