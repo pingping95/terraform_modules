@@ -16,11 +16,11 @@ resource "aws_subnet" "my_public_subnets" {
   count                   = length(var.public_subnet_cidr)
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = var.public_subnet_cidr[count.index]
-  availability_zone       = var.public_az[count.index]
+  availability_zone       = var.available_azs[count.index]
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "public-subnet-${count.index + 1}"
+    Name        = "${var.Environment}-public-subnet-${count.index + 1}"
     Environment = var.Environment
   }
 }
@@ -30,11 +30,11 @@ resource "aws_subnet" "my_private_subnets" {
   count                   = length(var.private_subnet_cidr)
   vpc_id                  = aws_vpc.my_vpc.id
   cidr_block              = var.private_subnet_cidr[count.index]
-  availability_zone       = var.private_az[count.index]
+  availability_zone       = var.available_azs[count.index]
   map_public_ip_on_launch = false
 
   tags = {
-    Name        = "private-subnet-${count.index + 1}"
+    Name        = "${var.Environment}-private-subnet-${count.index + 1}"
     Environment = var.Environment
   }
 }

@@ -14,8 +14,7 @@ module "vpc" {
     prefix = "test"
     public_subnet_cidr = ["10.0.1.0/24", "10.0.2.0/24"]
     private_subnet_cidr = ["10.0.10.0/24", "10.0.11.0/24"]
-    public_az = ["ap-northeast-2a", "ap-northeast-2c"]
-    private_az = ["ap-northeast-2a", "ap-northeast-2c"]
+   available_azs = ["ap-northeast-2a", "ap-northeast-2c"]
     define_eip = true
 }
 
@@ -31,8 +30,7 @@ region                  Example: "ap-northeast-2"
 prefix                  Example: "Dev"
 public_subnet_cidr      Example: ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 private_subnet_cidr     Example: ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-public_az               Example: ["ap-northeast-2a", "ap-northeast-2c"]
-private_az              Example: ["ap-northeast-2a", "ap-northeast-2c"]
+available_azs           Example: ["ap-northeast-2a", "ap-northeast-2c"]
 define_eip              Example: true     
 
 ```
